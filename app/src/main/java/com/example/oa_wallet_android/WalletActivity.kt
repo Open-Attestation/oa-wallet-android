@@ -1,5 +1,6 @@
 package com.example.oa_wallet_android
 
+import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
@@ -21,6 +22,29 @@ class WalletActivity : AppCompatActivity() {
                     val alertDialogBuilder = AlertDialog.Builder(this)
                     alertDialogBuilder.setTitle("Invalid file type chosen.")
                     alertDialogBuilder.setMessage("Only .oa files can be imported.")
+
+                    alertDialogBuilder.setPositiveButton("Dismiss") { _, _ ->
+
+                    }
+                    alertDialogBuilder.show()
+                } else {
+                    val alertDialogBuilder = AlertDialog.Builder(this)
+                    alertDialogBuilder.setTitle(filename)
+                    alertDialogBuilder.setItems(arrayOf("Save to wallet", "Verify", "View"),
+                        DialogInterface.OnClickListener { dialog, which ->
+                            when (which) {
+                                0 -> {
+                                    //Save to wallet
+                                }
+                                1 -> {
+                                    //Verify
+                                }
+                                2 -> {
+                                    //View
+                                }
+                            }
+                        })
+
 
                     alertDialogBuilder.setPositiveButton("Dismiss") { _, _ ->
 
