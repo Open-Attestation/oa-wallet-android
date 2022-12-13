@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import java.io.*
 
 
 class WalletActivity : AppCompatActivity() {
@@ -26,6 +27,19 @@ class WalletActivity : AppCompatActivity() {
                     }
                     alertDialogBuilder.show()
                 }
+
+                try {
+                    val inputStream: InputStream? = contentResolver.openInputStream(uri)
+                    if (inputStream != null) {
+                        val oadoc = inputStream.bufferedReader().use(BufferedReader::readText)
+                        inputStream.close()
+                    }
+
+                } catch (e: FileNotFoundException) {
+                    e.printStackTrace()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
             }
         }
 
@@ -35,7 +49,6 @@ class WalletActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Wallet"
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.walletappbarmenu, menu)
