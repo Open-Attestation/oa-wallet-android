@@ -35,18 +35,7 @@ class WalletActivity : AppCompatActivity() {
                             when (which) {
                                 0 -> {
                                     //Save to wallet
-                                    val outputFile = File(filesDir.path + '/' +filename)
-                                    try {
-                                        contentResolver.openInputStream(uri)?.use { input ->
-                                            outputFile.outputStream().use { output ->
-                                                input.copyTo(output)
-                                            }
-                                        }
-                                    } catch (e: FileNotFoundException) {
-                                        e.printStackTrace()
-                                    } catch (e: IOException) {
-                                        e.printStackTrace()
-                                    }
+                                    saveToWallet(uri,filename)
                                 }
                                 1 -> {
                                     //Verify
@@ -122,6 +111,21 @@ class WalletActivity : AppCompatActivity() {
             }
         }
         return result
+    }
+
+    private fun saveToWallet(uri: Uri, filename: String) {
+        val outputFile = File(filesDir.path + '/' + filename)
+        try {
+            contentResolver.openInputStream(uri)?.use { input ->
+                outputFile.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            }
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
 }
 
