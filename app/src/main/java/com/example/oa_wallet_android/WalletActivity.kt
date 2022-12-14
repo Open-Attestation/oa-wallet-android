@@ -39,21 +39,11 @@ class WalletActivity : AppCompatActivity() {
                                 }
                                 1 -> {
                                     //Verify
-                                    try {
-                                        val inputStream: InputStream? = contentResolver.openInputStream(uri)
-                                        if (inputStream != null) {
-                                            val oadoc = inputStream.bufferedReader().use(BufferedReader::readText)
-                                            inputStream.close()
-                                        }
-
-                                    } catch (e: FileNotFoundException) {
-                                        e.printStackTrace()
-                                    } catch (e: IOException) {
-                                        e.printStackTrace()
-                                    }
+                                    val oadoc = readDocument(uri)
                                 }
                                 2 -> {
                                     //View
+                                    val oadoc = readDocument(uri)
                                 }
                             }
                         })
@@ -126,6 +116,23 @@ class WalletActivity : AppCompatActivity() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
+    }
+
+    private fun readDocument(uri: Uri): String? {
+        try {
+            val inputStream: InputStream? = contentResolver.openInputStream(uri)
+            if (inputStream != null) {
+                val content = inputStream.bufferedReader().use(BufferedReader::readText)
+                inputStream.close()
+                return content
+            }
+
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return null
     }
 }
 
