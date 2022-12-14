@@ -23,10 +23,7 @@ class WalletActivity : AppCompatActivity() {
                     val alertDialogBuilder = AlertDialog.Builder(this)
                     alertDialogBuilder.setTitle("Invalid file type chosen.")
                     alertDialogBuilder.setMessage("Only .oa files are supported.")
-
-                    alertDialogBuilder.setPositiveButton("Dismiss") { _, _ ->
-
-                    }
+                    alertDialogBuilder.setPositiveButton("Dismiss", null)
                     alertDialogBuilder.show()
                 } else {
                     val alertDialogBuilder = AlertDialog.Builder(this)
@@ -45,10 +42,18 @@ class WalletActivity : AppCompatActivity() {
                                         val oa = OpenAttestation()
                                         oa.verifyDocument(this, oadoc) { isValid ->
                                             if (isValid) {
-                                                
+                                                val alertDialogBuilder = AlertDialog.Builder(this)
+                                                alertDialogBuilder.setTitle("Verification successful")
+                                                alertDialogBuilder.setMessage("This document is valid")
+                                                alertDialogBuilder.setPositiveButton("Dismiss", null)
+                                                alertDialogBuilder.show()
                                             }
                                             else {
-
+                                                val alertDialogBuilder = AlertDialog.Builder(this)
+                                                alertDialogBuilder.setTitle("Verification failed")
+                                                alertDialogBuilder.setMessage("This document has been tampered with")
+                                                alertDialogBuilder.setPositiveButton("Dismiss", null)
+                                                alertDialogBuilder.show()
                                             }
                                         }
                                     }
