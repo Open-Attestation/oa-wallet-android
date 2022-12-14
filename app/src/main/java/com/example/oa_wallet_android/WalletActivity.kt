@@ -9,6 +9,7 @@ import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.oa_wallet_android.OpenAttestation.OpenAttestation
 import java.io.*
 
 
@@ -40,6 +41,17 @@ class WalletActivity : AppCompatActivity() {
                                 1 -> {
                                     //Verify
                                     val oadoc = readDocument(uri)
+                                    if (oadoc != null) {
+                                        val oa = OpenAttestation()
+                                        oa.verifyDocument(this, oadoc) { isValid ->
+                                            if (isValid) {
+                                                
+                                            }
+                                            else {
+
+                                            }
+                                        }
+                                    }
                                 }
                                 2 -> {
                                     //View
