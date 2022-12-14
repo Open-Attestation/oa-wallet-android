@@ -21,7 +21,7 @@ class WalletActivity : AppCompatActivity() {
                 if (extension != "oa") {
                     val alertDialogBuilder = AlertDialog.Builder(this)
                     alertDialogBuilder.setTitle("Invalid file type chosen.")
-                    alertDialogBuilder.setMessage("Only .oa files can be imported.")
+                    alertDialogBuilder.setMessage("Only .oa files are supported.")
 
                     alertDialogBuilder.setPositiveButton("Dismiss") { _, _ ->
 
@@ -35,9 +35,33 @@ class WalletActivity : AppCompatActivity() {
                             when (which) {
                                 0 -> {
                                     //Save to wallet
+                                    val outputFile = File(filesDir.path + '/' +filename)
+                                    try {
+                                        contentResolver.openInputStream(uri)?.use { input ->
+                                            outputFile.outputStream().use { output ->
+                                                input.copyTo(output)
+                                            }
+                                        }
+                                    } catch (e: FileNotFoundException) {
+                                        e.printStackTrace()
+                                    } catch (e: IOException) {
+                                        e.printStackTrace()
+                                    }
                                 }
                                 1 -> {
                                     //Verify
+                                    try {
+                                        val inputStream: InputStream? = contentResolver.openInputStream(uri)
+                                        if (inputStream != null) {
+                                            val oadoc = inputStream.bufferedReader().use(BufferedReader::readText)
+                                            inputStream.close()
+                                        }
+
+                                    } catch (e: FileNotFoundException) {
+                                        e.printStackTrace()
+                                    } catch (e: IOException) {
+                                        e.printStackTrace()
+                                    }
                                 }
                                 2 -> {
                                     //View
@@ -52,18 +76,7 @@ class WalletActivity : AppCompatActivity() {
                     alertDialogBuilder.show()
                 }
 
-                try {
-                    val inputStream: InputStream? = contentResolver.openInputStream(uri)
-                    if (inputStream != null) {
-                        val oadoc = inputStream.bufferedReader().use(BufferedReader::readText)
-                        inputStream.close()
-                    }
 
-                } catch (e: FileNotFoundException) {
-                    e.printStackTrace()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
             }
         }
 
@@ -95,7 +108,7 @@ class WalletActivity : AppCompatActivity() {
             val cursor = contentResolver.query(uri, null, null, null, null)
             try {
                 if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                    result = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME))
                 }
             } finally {
                 cursor!!.close()
