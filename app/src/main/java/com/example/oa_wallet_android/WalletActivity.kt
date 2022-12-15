@@ -1,6 +1,7 @@
 package com.example.oa_wallet_android
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
@@ -9,6 +10,7 @@ import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.oa_wallet_android.OpenAttestation.OaRendererActivity
 import com.example.oa_wallet_android.OpenAttestation.OpenAttestation
 import java.io.*
 
@@ -61,18 +63,17 @@ class WalletActivity : AppCompatActivity() {
                                 2 -> {
                                     //View
                                     val oadoc = readDocument(uri)
+                                    val intent = Intent(this, OaRendererActivity::class.java)
+                                    startActivity(intent)
                                 }
                             }
                         })
-
 
                     alertDialogBuilder.setPositiveButton("Dismiss") { _, _ ->
 
                     }
                     alertDialogBuilder.show()
                 }
-
-
             }
         }
 
