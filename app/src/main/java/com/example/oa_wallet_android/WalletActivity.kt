@@ -63,8 +63,12 @@ class WalletActivity : AppCompatActivity() {
                                 2 -> {
                                     //View
                                     val oadoc = readDocument(uri)
-                                    val intent = Intent(this, OaRendererActivity::class.java)
-                                    startActivity(intent)
+                                    if (oadoc != null) {
+                                        val intent = Intent(this, OaRendererActivity::class.java)
+                                        intent.putExtra(OaRendererActivity.OA_DOCUMENT_KEY, oadoc)
+                                        intent.putExtra(OaRendererActivity.OA_DOCUMENT_FILENAME_KEY, filename)
+                                        startActivity(intent)
+                                    }
                                 }
                             }
                         })
