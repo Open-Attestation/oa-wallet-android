@@ -19,11 +19,11 @@ import java.io.*
 
 
 class WalletActivity : AppCompatActivity() {
-    var oaDocuments = mutableListOf<File>()
+    private var oaDocuments = mutableListOf<File>()
     private lateinit var documentsAdapter: DocumentRVAdapter
     private lateinit var recyclerview: RecyclerView
 
-    val openFileActivityLauncher =
+    private val openFileActivityLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
                 val filename = Utils.getFileName(this,uri)
@@ -45,7 +45,6 @@ class WalletActivity : AppCompatActivity() {
                                     saveToWallet(uri,filename)
                                     fetchDocuments()
                                     documentsAdapter.notifyDataSetChanged()
-
                                 }
                                 1 -> {
                                     //Verify
