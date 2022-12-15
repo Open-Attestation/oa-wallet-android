@@ -3,6 +3,8 @@ package com.example.oa_wallet_android.OpenAttestation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AlertDialog
@@ -91,6 +93,21 @@ class OaRendererActivity : AppCompatActivity() {
                 "utf-8",
                 null
             );
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_oa_renderer, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_close -> {
+            finish()
+            true
+        }
+        else -> {
+            super.onOptionsItemSelected(item)
         }
     }
 }
