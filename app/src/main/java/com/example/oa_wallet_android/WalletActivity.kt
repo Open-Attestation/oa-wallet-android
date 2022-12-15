@@ -19,7 +19,7 @@ import java.io.*
 
 
 class WalletActivity : AppCompatActivity() {
-    var oaDocuments = listOf<File>()
+    var oaDocuments = mutableListOf<File>()
     private lateinit var documentsAdapter: DocumentRVAdapter
     private lateinit var recyclerview: RecyclerView
 
@@ -44,8 +44,6 @@ class WalletActivity : AppCompatActivity() {
                                     //Save to wallet
                                     saveToWallet(uri,filename)
                                     fetchDocuments()
-                                    documentsAdapter = DocumentRVAdapter(oaDocuments)
-                                    recyclerview.adapter = documentsAdapter
                                     documentsAdapter.notifyDataSetChanged()
 
                                 }
@@ -155,9 +153,10 @@ class WalletActivity : AppCompatActivity() {
 
     private fun fetchDocuments() {
         val files = File(filesDir.path).listFiles().filterNotNull()
-        oaDocuments = files.filter {
+        oaDocuments.clear()
+        oaDocuments.addAll(files.filter {
             it.extension == "oa"
-        }
+        })
     }
 }
 
