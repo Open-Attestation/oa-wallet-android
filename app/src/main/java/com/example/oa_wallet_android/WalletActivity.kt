@@ -20,6 +20,8 @@ import java.io.*
 
 class WalletActivity : AppCompatActivity() {
     var oaDocuments = listOf<File>()
+    private lateinit var documentsAdapter: DocumentRVAdapter
+    private lateinit var recyclerview: RecyclerView
 
     val openFileActivityLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -41,6 +43,11 @@ class WalletActivity : AppCompatActivity() {
                                 0 -> {
                                     //Save to wallet
                                     saveToWallet(uri,filename)
+                                    fetchDocuments()
+                                    documentsAdapter = DocumentRVAdapter(oaDocuments)
+                                    recyclerview.adapter = documentsAdapter
+                                    documentsAdapter.notifyDataSetChanged()
+
                                 }
                                 1 -> {
                                     //Verify
@@ -92,15 +99,11 @@ class WalletActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Wallet"
 
-        val files = File(filesDir.path).listFiles().filterNotNull()
-        oaDocuments = files.filter {
-            it.extension == "oa"
-        }
-
-        val recyclerview = findViewById<RecyclerView>(R.id.documentRV)
+        fetchDocuments()
+        recyclerview = findViewById<RecyclerView>(R.id.documentRV)
         recyclerview.layoutManager = LinearLayoutManager(this)
-        val adapter = DocumentRVAdapter(oaDocuments)
-        recyclerview.adapter = adapter
+        documentsAdapter = DocumentRVAdapter(oaDocuments)
+        recyclerview.adapter = documentsAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -117,8 +120,6 @@ class WalletActivity : AppCompatActivity() {
             super.onOptionsItemSelected(item)
         }
     }
-
-
 
     private fun saveToWallet(uri: Uri, filename: String) {
         val outputFile = File(filesDir.path + '/' + filename)
@@ -150,6 +151,13 @@ class WalletActivity : AppCompatActivity() {
             e.printStackTrace()
         }
         return null
+    }
+
+    private fun fetchDocuments() {
+        val files = File(filesDir.path).listFiles().filterNotNull()
+        oaDocuments = files.filter {
+            it.extension == "oa"
+        }
     }
 }
 
