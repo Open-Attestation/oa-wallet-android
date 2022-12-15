@@ -5,17 +5,22 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.oa_wallet_android.OpenAttestation.OaRendererActivity
 import com.example.oa_wallet_android.OpenAttestation.OpenAttestation
 import java.io.*
 
 
 class WalletActivity : AppCompatActivity() {
+    var oaDocuments = listOf<File>()
+
     val openFileActivityLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
@@ -86,6 +91,16 @@ class WalletActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         supportActionBar?.title = "Wallet"
+
+        val files = File(filesDir.path).listFiles().filterNotNull()
+        oaDocuments = files.filter {
+            it.extension == "oa"
+        }
+
+        val recyclerview = findViewById<RecyclerView>(R.id.documentRV)
+        recyclerview.layoutManager = LinearLayoutManager(this)
+        val adapter = DocumentRVAdapter(oaDocuments)
+        recyclerview.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
