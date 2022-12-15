@@ -24,7 +24,7 @@ class WalletActivity : AppCompatActivity() {
     val openFileActivityLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
-                val filename = getFileName(uri)
+                val filename = Utils.getFileName(this,uri)
                 val extension = filename?.split('.')?.last()
                 if (extension != "oa") {
                     val alertDialogBuilder = AlertDialog.Builder(this)
@@ -118,27 +118,7 @@ class WalletActivity : AppCompatActivity() {
         }
     }
 
-    fun getFileName(uri: Uri): String? {
-        var result: String? = null
-        if (uri.scheme == "content") {
-            val cursor = contentResolver.query(uri, null, null, null, null)
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME))
-                }
-            } finally {
-                cursor!!.close()
-            }
-        }
-        if (result == null) {
-            result = uri.path
-            val cut = result!!.lastIndexOf('/')
-            if (cut != -1) {
-                result = result.substring(cut + 1)
-            }
-        }
-        return result
-    }
+
 
     private fun saveToWallet(uri: Uri, filename: String) {
         val outputFile = File(filesDir.path + '/' + filename)

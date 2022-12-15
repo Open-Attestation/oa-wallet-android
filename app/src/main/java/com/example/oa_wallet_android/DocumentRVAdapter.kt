@@ -23,7 +23,7 @@ class DocumentRVAdapter (private val documents: List<File>) : RecyclerView.Adapt
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val document = documents[position]
-        holder.textView.text = "yey"
+        holder.textView.text = document.name
 
     }
 
