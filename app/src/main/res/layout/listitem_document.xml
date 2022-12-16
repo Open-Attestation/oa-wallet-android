@@ -14,6 +14,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/optionsImageView"
         app:layout_constraintStart_toStartOf="parent"

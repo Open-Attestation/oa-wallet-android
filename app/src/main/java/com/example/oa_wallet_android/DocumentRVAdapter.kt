@@ -1,5 +1,6 @@
 package com.example.oa_wallet_android
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import java.io.File
 
 class DocumentRVAdapter (private val documents: List<File>) : RecyclerView.Adapter<DocumentRVAdapter.ViewHolder>() {
+    var onOptionsTap: ((File) -> Unit)? = null
 
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,7 +26,9 @@ class DocumentRVAdapter (private val documents: List<File>) : RecyclerView.Adapt
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val document = documents[position]
         holder.textView.text = document.name
-
+        holder.optionsImageView.setOnClickListener {
+            onOptionsTap?.invoke(document)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -33,5 +37,6 @@ class DocumentRVAdapter (private val documents: List<File>) : RecyclerView.Adapt
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val textView: TextView = itemView.findViewById(R.id.filenameTextView)
+        val optionsImageView: ImageView = itemView.findViewById(R.id.optionsImageView)
     }
 }
