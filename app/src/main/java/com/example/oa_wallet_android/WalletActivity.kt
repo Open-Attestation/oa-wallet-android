@@ -25,17 +25,7 @@ class WalletActivity : AppCompatActivity() {
     private val openFileActivityLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
-                val filename = Utils.getFileName(this,uri)
-                val extension = filename?.split('.')?.last()
-                if (extension != "oa") {
-                    val alertDialogBuilder = AlertDialog.Builder(this)
-                    alertDialogBuilder.setTitle("Invalid file type chosen.")
-                    alertDialogBuilder.setMessage("Only .oa files are supported.")
-                    alertDialogBuilder.setPositiveButton("Dismiss", null)
-                    alertDialogBuilder.show()
-                } else {
-                    presentImportOptions(uri)
-                }
+                handleUriImport(uri)
             }
         }
 
@@ -60,6 +50,17 @@ class WalletActivity : AppCompatActivity() {
         }
         recyclerview.adapter = documentsAdapter
 
+        var intentUri : Uri? = null
+        if (intent.action === Intent.ACTION_VIEW) {
+            intentUri = intent.data
+        }
+        else if (intent.action === Intent.ACTION_SEND) {
+            intentUri = intent.clipData?.getItemAt(0)?.uri
+        }
+
+        if (intentUri != null) {
+            handleUriImport(intentUri)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -192,6 +193,20 @@ class WalletActivity : AppCompatActivity() {
         intent.putExtra(OaRendererActivity.OA_DOCUMENT_KEY, document)
         intent.putExtra(OaRendererActivity.OA_DOCUMENT_FILENAME_KEY, filename)
         startActivity(intent)
+    }
+
+    private fun handleUriImport(uri: Uri) {
+        val filename = Utils.getFileName(this,uri)
+        val extension = filename?.split('.')?.last()
+        if (extension != "oa") {
+            val alertDialogBuilder = AlertDialog.Builder(this)
+            alertDialogBuilder.setTitle("Invalid file type chosen.")
+            alertDialogBuilder.setMessage("Only .oa files are supported.")
+            alertDialogBuilder.setPositiveButton("Dismiss", null)
+            alertDialogBuilder.show()
+        } else {
+            presentImportOptions(uri)
+        }
     }
 }
 
