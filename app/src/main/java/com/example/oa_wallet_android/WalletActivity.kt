@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
@@ -48,6 +49,12 @@ class WalletActivity : AppCompatActivity() {
         recyclerview = findViewById<RecyclerView>(R.id.documentRV)
         recyclerview.layoutManager = LinearLayoutManager(this)
         documentsAdapter = DocumentRVAdapter(oaDocuments)
+        documentsAdapter.onItemTap = { document ->
+            val oadoc = readDocument(document)
+            if (oadoc != null) {
+                viewDocument(oadoc, document.name)
+            }
+        }
         documentsAdapter.onOptionsTap = { document ->
             presentDocumentOptions(document)
         }
@@ -146,33 +153,14 @@ class WalletActivity : AppCompatActivity() {
                         //Verify
                         val oadoc = readDocument(uri)
                         if (oadoc != null) {
-                            val oa = OpenAttestation()
-                            oa.verifyDocument(this, oadoc) { isValid ->
-                                if (isValid) {
-                                    val alertDialogBuilder = AlertDialog.Builder(this)
-                                    alertDialogBuilder.setTitle("Verification successful")
-                                    alertDialogBuilder.setMessage("This document is valid")
-                                    alertDialogBuilder.setPositiveButton("Dismiss", null)
-                                    alertDialogBuilder.show()
-                                }
-                                else {
-                                    val alertDialogBuilder = AlertDialog.Builder(this)
-                                    alertDialogBuilder.setTitle("Verification failed")
-                                    alertDialogBuilder.setMessage("This document has been tampered with")
-                                    alertDialogBuilder.setPositiveButton("Dismiss", null)
-                                    alertDialogBuilder.show()
-                                }
-                            }
+                            verifyDocument(oadoc)
                         }
                     }
                     2 -> {
                         //View
                         val oadoc = readDocument(uri)
                         if (oadoc != null) {
-                            val intent = Intent(this, OaRendererActivity::class.java)
-                            intent.putExtra(OaRendererActivity.OA_DOCUMENT_KEY, oadoc)
-                            intent.putExtra(OaRendererActivity.OA_DOCUMENT_FILENAME_KEY, filename)
-                            startActivity(intent)
+                            viewDocument(oadoc, filename)
                         }
                     }
                 }
@@ -194,33 +182,14 @@ class WalletActivity : AppCompatActivity() {
                         //Verify
                         val oadoc = readDocument(file)
                         if (oadoc != null) {
-                            val oa = OpenAttestation()
-                            oa.verifyDocument(this, oadoc) { isValid ->
-                                if (isValid) {
-                                    val alertDialogBuilder = AlertDialog.Builder(this)
-                                    alertDialogBuilder.setTitle("Verification successful")
-                                    alertDialogBuilder.setMessage("This document is valid")
-                                    alertDialogBuilder.setPositiveButton("Dismiss", null)
-                                    alertDialogBuilder.show()
-                                }
-                                else {
-                                    val alertDialogBuilder = AlertDialog.Builder(this)
-                                    alertDialogBuilder.setTitle("Verification failed")
-                                    alertDialogBuilder.setMessage("This document has been tampered with")
-                                    alertDialogBuilder.setPositiveButton("Dismiss", null)
-                                    alertDialogBuilder.show()
-                                }
-                            }
+                            verifyDocument(oadoc)
                         }
                     }
                     1 -> {
                         //View
                         val oadoc = readDocument(file)
                         if (oadoc != null) {
-                            val intent = Intent(this, OaRendererActivity::class.java)
-                            intent.putExtra(OaRendererActivity.OA_DOCUMENT_KEY, oadoc)
-                            intent.putExtra(OaRendererActivity.OA_DOCUMENT_FILENAME_KEY, filename)
-                            startActivity(intent)
+                            viewDocument(oadoc, filename)
                         }
                     }
                 }
@@ -231,5 +200,30 @@ class WalletActivity : AppCompatActivity() {
         alertDialogBuilder.show()
     }
 
+    private fun verifyDocument(document: String) {
+        val oa = OpenAttestation()
+        oa.verifyDocument(this, document) { isValid ->
+            if (isValid) {
+                val alertDialogBuilder = AlertDialog.Builder(this)
+                alertDialogBuilder.setTitle("Verification successful")
+                alertDialogBuilder.setMessage("This document is valid")
+                alertDialogBuilder.setPositiveButton("Dismiss", null)
+                alertDialogBuilder.show()
+            }
+            else {
+                val alertDialogBuilder = AlertDialog.Builder(this)
+                alertDialogBuilder.setTitle("Verification failed")
+                alertDialogBuilder.setMessage("This document has been tampered with")
+                alertDialogBuilder.setPositiveButton("Dismiss", null)
+                alertDialogBuilder.show()
+            }
+        }
+    }
+    private fun viewDocument(document: String, filename: String?) {
+        val intent = Intent(this, OaRendererActivity::class.java)
+        intent.putExtra(OaRendererActivity.OA_DOCUMENT_KEY, document)
+        intent.putExtra(OaRendererActivity.OA_DOCUMENT_FILENAME_KEY, filename)
+        startActivity(intent)
+    }
 }
 

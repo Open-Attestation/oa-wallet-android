@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import java.io.File
 
 class DocumentRVAdapter (private val documents: List<File>) : RecyclerView.Adapter<DocumentRVAdapter.ViewHolder>() {
+    var onItemTap: ((File) -> Unit)? = null
     var onOptionsTap: ((File) -> Unit)? = null
 
     // create new views
@@ -26,6 +27,9 @@ class DocumentRVAdapter (private val documents: List<File>) : RecyclerView.Adapt
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val document = documents[position]
         holder.textView.text = document.name
+        holder.itemView.setOnClickListener {
+            onItemTap?.invoke(document)
+        }
         holder.optionsImageView.setOnClickListener {
             onOptionsTap?.invoke(document)
         }
