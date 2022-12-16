@@ -3,6 +3,7 @@ package com.example.oa_wallet_android
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
+import java.io.*
 
 class Utils {
     companion object {
@@ -27,6 +28,38 @@ class Utils {
                 }
             }
             return result
+        }
+
+        fun readDocument(context: Context, uri: Uri): String? {
+            try {
+                val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
+                if (inputStream != null) {
+                    val content = inputStream.bufferedReader().use(BufferedReader::readText)
+                    inputStream.close()
+                    return content
+                }
+
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            return null
+        }
+
+        fun readDocument(file: File): String? {
+            try {
+                val inputStream = file.inputStream()
+                val content = inputStream.bufferedReader().use(BufferedReader::readText)
+                inputStream.close()
+
+                return content
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            return null
         }
     }
 }

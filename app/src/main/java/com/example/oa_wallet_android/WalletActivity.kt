@@ -50,7 +50,7 @@ class WalletActivity : AppCompatActivity() {
         recyclerview.layoutManager = LinearLayoutManager(this)
         documentsAdapter = DocumentRVAdapter(oaDocuments)
         documentsAdapter.onItemTap = { document ->
-            val oadoc = readDocument(document)
+            val oadoc = Utils.readDocument(document)
             if (oadoc != null) {
                 viewDocument(oadoc, document.name)
             }
@@ -92,38 +92,6 @@ class WalletActivity : AppCompatActivity() {
         }
     }
 
-    private fun readDocument(uri: Uri): String? {
-        try {
-            val inputStream: InputStream? = contentResolver.openInputStream(uri)
-            if (inputStream != null) {
-                val content = inputStream.bufferedReader().use(BufferedReader::readText)
-                inputStream.close()
-                return content
-            }
-
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return null
-    }
-
-    private fun readDocument(file: File): String? {
-        try {
-            val inputStream = file.inputStream()
-            val content = inputStream.bufferedReader().use(BufferedReader::readText)
-            inputStream.close()
-
-            return content
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return null
-    }
-
     private fun fetchDocuments() {
         val files = File(filesDir.path).listFiles()?.filterNotNull()
         if (files != null) {
@@ -151,14 +119,14 @@ class WalletActivity : AppCompatActivity() {
                     }
                     1 -> {
                         //Verify
-                        val oadoc = readDocument(uri)
+                        val oadoc = Utils.readDocument(this, uri)
                         if (oadoc != null) {
                             verifyDocument(oadoc)
                         }
                     }
                     2 -> {
                         //View
-                        val oadoc = readDocument(uri)
+                        val oadoc = Utils.readDocument(this, uri)
                         if (oadoc != null) {
                             viewDocument(oadoc, filename)
                         }
@@ -180,14 +148,14 @@ class WalletActivity : AppCompatActivity() {
                 when (which) {
                     0 -> {
                         //Verify
-                        val oadoc = readDocument(file)
+                        val oadoc = Utils.readDocument(file)
                         if (oadoc != null) {
                             verifyDocument(oadoc)
                         }
                     }
                     1 -> {
                         //View
-                        val oadoc = readDocument(file)
+                        val oadoc = Utils.readDocument(file)
                         if (oadoc != null) {
                             viewDocument(oadoc, filename)
                         }
