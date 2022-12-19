@@ -84,6 +84,8 @@ class OaRendererActivity : AppCompatActivity() {
             webView.settings.loadWithOverviewMode = true
             webView.settings.useWideViewPort = true;
             webView.settings.javaScriptEnabled = true
+            webView.settings.setBuiltInZoomControls(true);
+            webView.settings.setDisplayZoomControls(false);
 
             setContentView(webView)
             webView.loadDataWithBaseURL(
