@@ -11,6 +11,8 @@ import android.widget.ProgressBar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oa_wallet_android.OpenAttestation.OaRendererActivity
@@ -166,10 +168,7 @@ class WalletActivity : AppCompatActivity() {
                     }
                     2 -> {
                         //Share
-                        val oadoc = Utils.readDocument(file)
-                        if (oadoc != null) {
-                            viewDocument(oadoc, filename)
-                        }
+                        shareDocument(file)
                     }
                     3 -> {
                         //Delete
@@ -226,6 +225,21 @@ class WalletActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun shareDocument(file: File) {
+        val uri = FileProvider.getUriForFile(
+            this,
+            BuildConfig.APPLICATION_ID + ".provider",
+            file
+        )
+
+        val shareIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, uri)
+            type = "application/octet-stream"
+        }
+        startActivity(Intent.createChooser(shareIntent, null))
     }
 
     private fun handleUriImport(uri: Uri) {
