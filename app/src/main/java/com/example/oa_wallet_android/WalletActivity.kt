@@ -4,9 +4,10 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,7 @@ class WalletActivity : AppCompatActivity() {
     private var oaDocuments = mutableListOf<File>()
     private lateinit var documentsAdapter: DocumentRVAdapter
     private lateinit var recyclerview: RecyclerView
+    private lateinit var progressBar: ProgressBar
 
     private val openFileActivityLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -31,7 +33,8 @@ class WalletActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_wallet)
+        progressBar = findViewById<ProgressBar>(R.id.progressBar)
 
         supportActionBar?.title = "Wallet"
 
@@ -170,8 +173,10 @@ class WalletActivity : AppCompatActivity() {
     }
 
     private fun verifyDocument(document: String) {
+        showProgressBar()
         val oa = OpenAttestation()
         oa.verifyDocument(this, document) { isValid ->
+            hideProgressBar()
             if (isValid) {
                 val alertDialogBuilder = AlertDialog.Builder(this)
                 alertDialogBuilder.setTitle("Verification successful")
@@ -189,10 +194,25 @@ class WalletActivity : AppCompatActivity() {
         }
     }
     private fun viewDocument(document: String, filename: String?) {
-        val intent = Intent(this, OaRendererActivity::class.java)
-        intent.putExtra(OaRendererActivity.OA_DOCUMENT_KEY, document)
-        intent.putExtra(OaRendererActivity.OA_DOCUMENT_FILENAME_KEY, filename)
-        startActivity(intent)
+        showProgressBar()
+        val oa = OpenAttestation()
+        oa.verifyDocument(this, document) { isValid ->
+            hideProgressBar()
+            if (isValid) {
+                val intent = Intent(this, OaRendererActivity::class.java)
+                intent.putExtra(OaRendererActivity.OA_DOCUMENT_KEY, document)
+                intent.putExtra(OaRendererActivity.OA_DOCUMENT_FILENAME_KEY, filename)
+                startActivity(intent)
+            }
+            else {
+                val alertDialogBuilder = AlertDialog.Builder(this)
+                alertDialogBuilder.setTitle("Verification failed")
+                alertDialogBuilder.setMessage("This document has been tampered with and cannot be viewed")
+                alertDialogBuilder.setPositiveButton("Dismiss", null)
+                alertDialogBuilder.show()
+            }
+        }
+
     }
 
     private fun handleUriImport(uri: Uri) {
@@ -207,6 +227,14 @@ class WalletActivity : AppCompatActivity() {
         } else {
             presentImportOptions(uri)
         }
+    }
+
+    private fun showProgressBar() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        progressBar.visibility = View.INVISIBLE
     }
 }
 
