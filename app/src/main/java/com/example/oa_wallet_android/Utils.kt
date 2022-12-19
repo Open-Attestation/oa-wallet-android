@@ -61,5 +61,9 @@ class Utils {
             }
             return null
         }
+
+        fun deleteDocument(file: File) {
+            file.delete()
+        }
     }
 }

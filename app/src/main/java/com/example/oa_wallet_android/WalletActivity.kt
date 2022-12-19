@@ -147,7 +147,7 @@ class WalletActivity : AppCompatActivity() {
         val filename = file.name
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(filename)
-        alertDialogBuilder.setItems(arrayOf("Verify", "View"),
+        alertDialogBuilder.setItems(arrayOf("Verify", "View", "Share", "Delete"),
             DialogInterface.OnClickListener { _, which ->
                 when (which) {
                     0 -> {
@@ -163,6 +163,19 @@ class WalletActivity : AppCompatActivity() {
                         if (oadoc != null) {
                             viewDocument(oadoc, filename)
                         }
+                    }
+                    2 -> {
+                        //Share
+                        val oadoc = Utils.readDocument(file)
+                        if (oadoc != null) {
+                            viewDocument(oadoc, filename)
+                        }
+                    }
+                    3 -> {
+                        //Delete
+                        Utils.deleteDocument(file)
+                        fetchDocuments()
+                        documentsAdapter.notifyDataSetChanged()
                     }
                 }
             })
