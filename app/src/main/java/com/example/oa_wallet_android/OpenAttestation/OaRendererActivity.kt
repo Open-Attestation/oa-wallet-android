@@ -84,13 +84,13 @@ class OaRendererActivity : AppCompatActivity() {
             webView.settings.loadWithOverviewMode = true
             webView.settings.useWideViewPort = true;
             webView.settings.javaScriptEnabled = true
-            webView.settings.setBuiltInZoomControls(true);
-            webView.settings.setDisplayZoomControls(false);
+            webView.settings.builtInZoomControls = true;
+            webView.settings.displayZoomControls = false;
 
             setContentView(webView)
             webView.loadDataWithBaseURL(
                 null,
-                "<html><head></head><body><script src=\"file:///android_asset/oabundle.js\" type=\"text/javascript\"></script>Initialising</body></html>",
+                "<html><head></head><body><script src=\"file:///android_asset/oabundle.js\" type=\"text/javascript\"></script></body></html>",
                 "text/html",
                 "utf-8",
                 null
