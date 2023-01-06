@@ -15,8 +15,8 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.oa_wallet_android.OpenAttestation.OaRendererActivity
-import com.example.oa_wallet_android.OpenAttestation.OpenAttestation
+import com.openattestation.open_attestation_android.OaRendererActivity
+import com.openattestation.open_attestation_android.OpenAttestation
 import java.io.*
 
 
