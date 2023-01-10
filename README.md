@@ -3,7 +3,7 @@ The OA Wallet Android app is a reference implementation of how Android apps can 
 
 ## Features
 
-- Associate `.oa` documents to opened with the app
+- Associate `.oa` documents to opened with the app [[How?]](https://github.com/Open-Attestation/oa-wallet-android/wiki/How-to-associate-.oa-documents-to-your-app)
 - Import `.oa` into the wallet
 - Verify `.oa` documents
 - View the rendered `.oa` document
