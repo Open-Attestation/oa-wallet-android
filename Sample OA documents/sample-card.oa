@@ -1,0 +1,44 @@
+{
+  "version": "https://schema.openattestation.com/2.0/schema.json",
+  "data": {
+    "id": "6a5bfd35-da78-4a61-a914-a94f8a061a6f:string:bb113178-dbdf-4c50-8511-1c85e031d03f",
+    "name": "c30057a9-6bca-46c9-bfc9-5c29a0ee0779:string:John Doe",
+    "issueDate": "3a0687f2-9cb1-4245-a85c-d18ee8b6715e:string:2022-12-31",
+    "serialNumber": "29fa30e7-4d36-4c5f-b54a-73be79fdaa84:string:OADC20XX/XXX",
+    "issuers": [
+      {
+        "name": "55ab6abd-1936-4ceb-b16b-b58e82617045:string:FOR TESTING",
+        "id": "9196e074-5275-4d0d-ad4b-38ddebe00460:string:did:ethr:0x902981db5ed06ea9b8ff6bdb544f31cb9db45a1a",
+        "revocation": {
+          "type": "b59c5774-b8dc-4b85-9a9d-73441203db7a:string:NONE",
+          "location": "63d491ec-ff3a-40ce-8fda-31492cea4572:string:"
+        },
+        "identityProof": {
+          "type": "6725936d-a3cd-446c-88c4-bcc477b76bac:string:DNS-DID",
+          "location": "312ab09b-a760-45b8-8d21-f21d89671fda:string:for-testing.identity.oa.gov.sg",
+          "key": "e0e8630d-4723-45f4-b5f8-f195395b0fc0:string:did:ethr:0x902981db5ed06ea9b8ff6bdb544f31cb9db45a1a#controller"
+        }
+      }
+    ],
+    "$template": {
+      "name": "ba9b4163-6112-4e93-b4f0-d742213ffd23:string:for-testing/openattestation-demo-certificate-card",
+      "type": "61226f9a-b3c8-4210-b427-41cfe8048238:string:EMBEDDED_RENDERER",
+      "url": "fac9da31-03fb-49ab-a3c9-1844d59dfd10:string:https://for-testing.renderer.oa.gov.sg"
+    }
+  },
+  "signature": {
+    "type": "SHA3MerkleProof",
+    "targetHash": "2137a1db4b8b79d5df3ff3e6efdacf91eb05c1ef09bfc430520db08e29276a60",
+    "proof": [],
+    "merkleRoot": "2137a1db4b8b79d5df3ff3e6efdacf91eb05c1ef09bfc430520db08e29276a60"
+  },
+  "proof": [
+    {
+      "type": "OpenAttestationSignature2018",
+      "created": "2023-01-16T08:32:28.202Z",
+      "proofPurpose": "assertionMethod",
+      "verificationMethod": "did:ethr:0x902981db5ed06ea9b8ff6bdb544f31cb9db45a1a#controller",
+      "signature": "0x179bfc80550f72b847bef89fb8f185b425937756a41f456d69cd53cb8ba496b66c9fad8709cdf3d066f677cb6da127d618101bc57da36b2f951098e3e95033f21b"
+    }
+  ]
+}

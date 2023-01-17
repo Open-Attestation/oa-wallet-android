@@ -1,0 +1,44 @@
+{
+  "version": "https://schema.openattestation.com/2.0/schema.json",
+  "data": {
+    "id": "d6a1fc07-79c6-441c-8c9c-18baeeba0c75:string:29f8e5b7-2712-477d-8334-fdb1f95684cc",
+    "name": "ebdb2bdb-84bd-4ebf-acef-c388adacbc51:string:John Doe",
+    "courseTitle": "fce0a22b-77ad-4a40-932e-475a2e9eb34e:string:OpenAttestation Demo",
+    "courseStartDate": "47830f47-e68e-4537-9e31-ba648cc593b7:string:2023-01-05",
+    "issuers": [
+      {
+        "name": "ef1747b3-dd88-41f2-b862-26cf9ccdab8b:string:FOR TESTING",
+        "id": "ce84ac8e-0884-4aec-9cee-e2db8284af58:string:did:ethr:0x902981db5ed06ea9b8ff6bdb544f31cb9db45a1a",
+        "revocation": {
+          "type": "fad47ac6-f68b-4acf-8b15-eabd66710c41:string:NONE",
+          "location": "4d4b7267-5052-43f9-a901-48546904701c:string:"
+        },
+        "identityProof": {
+          "type": "0e3d5e16-b955-4b75-933f-949f2ab73fcf:string:DNS-DID",
+          "location": "71b45cc0-8aa7-470a-ab5a-2b0ec4d9cd52:string:for-testing.identity.oa.gov.sg",
+          "key": "4cd671b5-c30f-4477-82d3-8ca30bfe642e:string:did:ethr:0x902981db5ed06ea9b8ff6bdb544f31cb9db45a1a#controller"
+        }
+      }
+    ],
+    "$template": {
+      "name": "7c277d53-82b4-4e4c-aa52-9e96054ae081:string:for-testing/openattestation-demo-certificate",
+      "type": "4ff818a8-b8b0-4b55-8067-7adecd1b5831:string:EMBEDDED_RENDERER",
+      "url": "e29a846e-208e-4fa3-a3f0-eb9266f4907a:string:https://for-testing.renderer.oa.gov.sg"
+    }
+  },
+  "signature": {
+    "type": "SHA3MerkleProof",
+    "targetHash": "d2567d2836483f4904aea9f2b532c731bd6ce0d395829cecd6e31e25deee5b6c",
+    "proof": [],
+    "merkleRoot": "d2567d2836483f4904aea9f2b532c731bd6ce0d395829cecd6e31e25deee5b6c"
+  },
+  "proof": [
+    {
+      "type": "OpenAttestationSignature2018",
+      "created": "2023-01-06T02:19:06.498Z",
+      "proofPurpose": "assertionMethod",
+      "verificationMethod": "did:ethr:0x902981db5ed06ea9b8ff6bdb544f31cb9db45a1a#controller",
+      "signature": "0x1ada1c79c93cd65369f73a0872788f0f085a981be0a8a5d777ea80a53ea7feb65c92dcc6c1c101e10e2a0b04b97301b6a5ffad96fbbd3b79d914eda6ebd7541d1c"
+    }
+  ]
+}
