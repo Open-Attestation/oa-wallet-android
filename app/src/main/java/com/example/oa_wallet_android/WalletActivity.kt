@@ -272,7 +272,7 @@ class WalletActivity : AppCompatActivity() {
 
     private fun displayQrValidityOptions(document: String) {
 
-        if(Config.getuploadurlEndpoint.isEmpty() || Config.getuploadurlEndpoint.isEmpty()) {
+        if(Config.getuploadurlEndpoint.isEmpty() || Config.getdownloadurlEndpoint.isEmpty()) {
             val alertDialogBuilder = AlertDialog.Builder(this)
             alertDialogBuilder.setTitle("Error: QR Generation Endpoints not configured!")
             alertDialogBuilder.setMessage("Please open Config.swift to add the endpoints")
