@@ -112,7 +112,7 @@ class WalletActivity : AppCompatActivity() {
         val filename = Utils.getFileName(this,uri)
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(filename)
-        alertDialogBuilder.setItems(arrayOf("Save to wallet", "Verify", "View"),
+        alertDialogBuilder.setItems(arrayOf("Save to wallet", "Verify", "View", "Generate QR Code"),
             DialogInterface.OnClickListener { _, which ->
                 when (which) {
                     0 -> {
@@ -137,6 +137,13 @@ class WalletActivity : AppCompatActivity() {
                             viewDocument(oadoc, filename)
                         }
                     }
+                    3 -> {
+                        //Generate QR Code
+                        val oadoc = Utils.readDocument(this, uri)
+                        if (oadoc != null) {
+                            displayQrValidityOptions(oadoc)
+                        }
+                    }
                 }
             })
         alertDialogBuilder.setPositiveButton("Dismiss") { _, _ ->
@@ -149,7 +156,7 @@ class WalletActivity : AppCompatActivity() {
         val filename = file.name
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(filename)
-        alertDialogBuilder.setItems(arrayOf("Verify", "View", "Share", "Delete"),
+        alertDialogBuilder.setItems(arrayOf("Verify", "View", "Share", "Generate QR Code", "Delete"),
             DialogInterface.OnClickListener { _, which ->
                 when (which) {
                     0 -> {
@@ -171,6 +178,13 @@ class WalletActivity : AppCompatActivity() {
                         shareDocument(file)
                     }
                     3 -> {
+                        //Generate QR Code
+                        val oadoc = Utils.readDocument(file)
+                        if (oadoc != null) {
+                            displayQrValidityOptions(oadoc)
+                        }
+                    }
+                    4 -> {
                         //Delete
                         Utils.deleteDocument(file)
                         fetchDocuments()
@@ -254,6 +268,52 @@ class WalletActivity : AppCompatActivity() {
         } else {
             presentImportOptions(uri)
         }
+    }
+
+    private fun displayQrValidityOptions(document: String) {
+
+        if(Config.getuploadurlEndpoint.isEmpty() || Config.getuploadurlEndpoint.isEmpty()) {
+            val alertDialogBuilder = AlertDialog.Builder(this)
+            alertDialogBuilder.setTitle("Error: QR Generation Endpoints not configured!")
+            alertDialogBuilder.setMessage("Please open Config.swift to add the endpoints")
+            alertDialogBuilder.setPositiveButton("Dismiss", null)
+            alertDialogBuilder.show()
+            return
+        }
+
+
+
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle("Select validity period")
+        alertDialogBuilder.setItems(arrayOf("1 Hour", "1 Day", "3 Days", "7 Days"),
+            DialogInterface.OnClickListener { _, which ->
+                when (which) {
+                    0 -> {
+                        //1 Hour
+                        displayDocumentQR(document,3600)
+                    }
+                    1 -> {
+                        //1 Day
+                        displayDocumentQR(document,86400)
+                    }
+                    2 -> {
+                        //3 Days
+                        displayDocumentQR(document,259200)
+                    }
+                    3 -> {
+                        //7 Days
+                        displayDocumentQR(document,604800)
+                    }
+                }
+            })
+        alertDialogBuilder.setPositiveButton("Cancel") { _, _ ->
+
+        }
+        alertDialogBuilder.show()
+    }
+
+    private fun displayDocumentQR(document: String, validity: Int) {
+
     }
 
     private fun showProgressBar() {
