@@ -315,6 +315,9 @@ class WalletActivity : AppCompatActivity() {
     private fun displayDocumentQR(document: String, validity: Int) {
         Thread {
             val downloadUrl = DocumentsService.uploadDocument(document,validity)
+            val intent = Intent(this, QRCodeActivity::class.java)
+            intent.putExtra(QRCodeActivity.QR_DATA_KEY, downloadUrl)
+            startActivity(intent)
         }.start()
     }
 
