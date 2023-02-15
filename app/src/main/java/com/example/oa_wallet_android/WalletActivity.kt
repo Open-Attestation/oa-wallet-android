@@ -313,7 +313,9 @@ class WalletActivity : AppCompatActivity() {
     }
 
     private fun displayDocumentQR(document: String, validity: Int) {
-
+        Thread {
+            val downloadUrl = DocumentsService.uploadDocument(document,validity)
+        }.start()
     }
 
     private fun showProgressBar() {
