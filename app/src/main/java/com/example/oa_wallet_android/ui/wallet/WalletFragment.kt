@@ -45,8 +45,6 @@ class WalletFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val walletViewModel =
-            ViewModelProvider(this).get(WalletViewModel::class.java)
 
         _binding = FragmentWalletBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -62,7 +60,6 @@ class WalletFragment : Fragment() {
                 when (menuItem.itemId) {
                     R.id.action_import -> {
                         openFileActivityLauncher.launch("*/*")
-                        true
                     }
                 }
                 return true
@@ -336,11 +333,24 @@ class WalletFragment : Fragment() {
     }
 
     private fun displayDocumentQR(document: String, validity: Int) {
+        showProgressBar()
         Thread {
-            val downloadUrl = DocumentsService.uploadDocument(document,validity)
-            val intent = Intent(requireActivity(), QRCodeActivity::class.java)
-            intent.putExtra(QRCodeActivity.QR_DATA_KEY, downloadUrl)
-            startActivity(intent)
+            try {
+                val downloadUrl = DocumentsService.uploadDocument(document,validity)
+                val intent = Intent(requireActivity(), QRCodeActivity::class.java)
+                intent.putExtra(QRCodeActivity.QR_DATA_KEY, downloadUrl)
+
+                startActivity(intent)
+            } catch (error: Exception) {
+                requireActivity().runOnUiThread {
+                    val alertDialogBuilder = AlertDialog.Builder(requireActivity())
+                    alertDialogBuilder.setTitle("Error generating QR")
+                    alertDialogBuilder.setMessage("${error.message}")
+                    alertDialogBuilder.setPositiveButton("Dismiss", null)
+                    alertDialogBuilder.show()
+                }
+            }
+            hideProgressBar()
         }.start()
     }
 

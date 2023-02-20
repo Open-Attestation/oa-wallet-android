@@ -125,6 +125,7 @@ class ScannerFragment : Fragment() {
                     scannedValue = barcodes.valueAt(0).rawValue
 
                     requireActivity().runOnUiThread {
+                        
                         cameraSource.stop()
                     }
                     if (!URLUtil.isValidUrl(scannedValue)) {
