@@ -1,6 +1,5 @@
 package com.example.oa_wallet_android
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
